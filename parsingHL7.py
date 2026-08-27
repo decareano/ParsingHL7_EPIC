@@ -31,5 +31,14 @@ def parse_hl7_to_dict(hl7_raw_str):
                     else:
                         sub_dict[f"field_{index}"] = fields[index]
             results[segment_name] = sub_dict
+        elif fields[0] == "OBX":
+            obx_data = {}
+            obx_data["set_id"] = fields[1]
+            obx_data["test_name"] = fields[3].replace("^", " ")
+            obx_data["value"] = fields[5]
+            obx_data["units"] = fields[6]
+            if "OBX" not in results:
+                results["OBX"] = []
+            results["OBX"].append(obx_data)
 
     return results
